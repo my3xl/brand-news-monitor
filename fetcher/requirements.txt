@@ -1,0 +1,8 @@
+playwright
+redis
+python-dotenv
+requests[socks]
+pysocks
+openai
+apscheduler
+numpy
