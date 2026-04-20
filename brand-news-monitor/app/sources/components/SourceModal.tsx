@@ -103,7 +103,7 @@ export default function SourceModal({
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const updateSelector = (field: keyof Source["selectors"], value: string) => {
+  const updateSelector = (field: "articleLink" | "title" | "source" | "time", value: string) => {
     setFormData((prev) => ({
       ...prev,
       selectors: { ...prev.selectors, [field]: value },
