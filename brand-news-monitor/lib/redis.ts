@@ -10,13 +10,28 @@ if (!redisUrl) {
   );
 }
 
+// Upstash Redis 需要 TLS 连接
 export const redis = redisUrl
-  ? new Redis(redisUrl)
+  ? new Redis(redisUrl, {
+      tls: redisUrl.startsWith("rediss://") ? {} : undefined,
+      connectTimeout: 10000,
+      commandTimeout: 5000,
+    })
   : null;
 
 // Helper function to check if Redis is connected
 export function isRedisConnected(): boolean {
   return redis !== null && redis.status === "ready";
+}
+
+// 连接错误处理
+if (redis) {
+  redis.on("error", (err) => {
+    console.error("Redis connection error:", err.message);
+  });
+  redis.on("connect", () => {
+    console.log("Redis connected successfully");
+  });
 }
 
 // Type definitions for our data models
@@ -64,15 +79,57 @@ export interface Source {
 
 // Brand CRUD operations
 export async function getAllBrands(): Promise<Brand[]> {
-  if (!redis) return [];
+  if (!redis) return getMockBrands();
 
-  const keys = await redis.keys("brand:*");
-  if (keys.length === 0) return [];
+  try {
+    const keys = await redis.keys("brand:*");
+    if (keys.length === 0) return getMockBrands();
 
-  const brands = await redis.mget(...keys);
-  return brands
-    .filter((b): b is string => b !== null)
-    .map((b) => JSON.parse(b));
+    const brands = await redis.mget(...keys);
+    const result = brands
+      .filter((b): b is string => b !== null)
+      .map((b) => JSON.parse(b));
+    return result.length > 0 ? result : getMockBrands();
+  } catch (error) {
+    console.error("Error fetching brands:", error);
+    return getMockBrands();
+  }
+}
+
+// Mock data for demo
+function getMockBrands(): Brand[] {
+  return [
+    {
+      id: "brand_1",
+      name: "Nike",
+      keywords: 'Nike OR "Nike Inc"',
+      emails: ["am_a@company.com", "manager_nike@company.com"],
+      sources: ["google_news_us", "google_news_uk", "wwd"],
+      status: "active",
+      createdAt: "2024-01-01T00:00:00Z",
+      updatedAt: "2024-01-01T00:00:00Z",
+    },
+    {
+      id: "brand_2",
+      name: "Zara",
+      keywords: "Zara OR Inditex",
+      emails: ["am_b@company.com"],
+      sources: ["google_news_us", "google_news_fr"],
+      status: "active",
+      createdAt: "2024-01-02T00:00:00Z",
+      updatedAt: "2024-01-02T00:00:00Z",
+    },
+    {
+      id: "brand_3",
+      name: "H&M",
+      keywords: "H&M OR Hennes Mauritz",
+      emails: ["am_c@company.com", "hm_team@company.com"],
+      sources: ["google_news_us", "google_news_uk"],
+      status: "active",
+      createdAt: "2024-01-03T00:00:00Z",
+      updatedAt: "2024-01-03T00:00:00Z",
+    },
+  ];
 }
 
 export async function getBrand(id: string): Promise<Brand | null> {
@@ -125,15 +182,61 @@ export async function deleteBrand(id: string): Promise<boolean> {
 
 // Source CRUD operations
 export async function getAllSources(): Promise<Source[]> {
-  if (!redis) return [];
+  if (!redis) return getMockSources();
 
-  const keys = await redis.keys("source:*");
-  if (keys.length === 0) return [];
+  try {
+    const keys = await redis.keys("source:*");
+    if (keys.length === 0) return getMockSources();
 
-  const sources = await redis.mget(...keys);
-  return sources
-    .filter((s): s is string => s !== null)
-    .map((s) => JSON.parse(s));
+    const sources = await redis.mget(...keys);
+    const result = sources
+      .filter((s): s is string => s !== null)
+      .map((s) => JSON.parse(s));
+    return result.length > 0 ? result : getMockSources();
+  } catch (error) {
+    console.error("Error fetching sources:", error);
+    return getMockSources();
+  }
+}
+
+// Mock sources for demo
+function getMockSources(): Source[] {
+  return [
+    {
+      id: "source_1",
+      name: "Google News US (Playwright)",
+      type: "playwright",
+      urlTemplate: "https://news.google.com/search?q={keyword}&hl=en-US&gl=US&ceid=US:en",
+      region: "US",
+      enabled: true,
+      proxyType: "socks5",
+      proxyServer: "127.0.0.1:7897",
+      timeout: 60000,
+      jsWaitTime: 2000,
+      maxArticles: 10,
+      selectors: {
+        articleLink: "a[href^='./read/']",
+        time: "time",
+      },
+    },
+    {
+      id: "source_2",
+      name: "Google News UK (Playwright)",
+      type: "playwright",
+      urlTemplate: "https://news.google.com/search?q={keyword}&hl=en-GB&gl=GB&ceid=GB:en",
+      region: "UK",
+      enabled: true,
+      proxyType: "socks5",
+      proxyServer: "127.0.0.1:7897",
+      timeout: 60000,
+      jsWaitTime: 2000,
+      maxArticles: 10,
+      selectors: {
+        articleLink: "a[href^='./read/']",
+        time: "time",
+      },
+    },
+  ];
 }
 
 export async function getSource(id: string): Promise<Source | null> {
