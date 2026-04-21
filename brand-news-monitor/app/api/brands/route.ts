@@ -45,7 +45,7 @@ const mockBrands = [
   {
     id: "brand_5",
     name: "Adidas",
-    keywords: "Adidas OR "Adidas Group"",
+    keywords: 'Adidas OR "Adidas Group"',
     emails: ["am_e@company.com", "adidas_manager@company.com"],
     sources: ["google_news_us", "google_news_de"],
     status: "paused",
