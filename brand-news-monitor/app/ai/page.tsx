@@ -417,27 +417,6 @@ export default function AIConfigPage() {
         </div>
       </div>
 
-      {/* Cost Estimate */}
-      <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <div className="flex items-start gap-3">
-          <AlertCircle className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
-          <div>
-            <h3 className="text-sm font-medium text-blue-900">成本估算</h3>
-            <p className="text-sm text-blue-800 mt-1">
-              使用 Kimi Coding 处理 10,000 篇新闻（摘要+分级）：
-            </p>
-            <ul className="text-sm text-blue-800 mt-2 space-y-1">
-              <li>• 输入 Token: ~¥5.12 (512 tokens/批次 × 1000批次)</li>
-              <li>• 输出 Token: ~¥4.50 (摘要+分级)</li>
-              <li>• <strong>总计: ~¥9.62/天</strong></li>
-            </ul>
-            <p className="text-xs text-blue-600 mt-2">
-              使用标题相似度去重可额外节省 Embedding API 费用 (~¥15/天)
-            </p>
-          </div>
-        </div>
-      </div>
-
       {/* Save Button */}
       <div className="mt-8 flex justify-end">
         <button className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
