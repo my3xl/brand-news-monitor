@@ -1,10 +1,10 @@
 import { Clock, Calendar, Play, RotateCcw, Building2, CheckCircle2, AlertCircle } from "lucide-react";
 
 const scheduleHistory = [
-  { id: 1, time: "2024-01-15 09:00:00", status: "success", brands: 12, news: 48 },
-  { id: 2, time: "2024-01-14 09:00:00", status: "success", brands: 12, news: 35 },
-  { id: 3, time: "2024-01-13 09:00:00", status: "partial", brands: 11, news: 42 },
-  { id: 4, time: "2024-01-12 09:00:00", status: "failed", brands: 0, news: 0 },
+  { id: 1, time: "2025-04-20 09:00:00", status: "success", brands: 4, news: 15 },
+  { id: 2, time: "2025-04-19 09:00:00", status: "success", brands: 4, news: 12 },
+  { id: 3, time: "2025-04-18 09:00:00", status: "partial", brands: 3, news: 8 },
+  { id: 4, time: "2025-04-17 09:00:00", status: "success", brands: 4, news: 18 },
 ];
 
 export default function SchedulePage() {
@@ -87,7 +87,7 @@ export default function SchedulePage() {
               </div>
               <div className="mt-3 p-3 bg-zinc-50 rounded-lg">
                 <div className="flex flex-wrap gap-2">
-                  {["Nike", "Zara", "H\u0026M", "Adidas", "Uniqlo"].map((brand) => (
+                  {["RAG & BONE", "HELLY HANSEN", "CAMILLA", "ALLSAINTS"].map((brand) => (
                     <label key={brand} className="flex items-center gap-1 px-2 py-1 bg-white rounded border">
                       <input type="checkbox" defaultChecked className="h-3 w-3" />
                       <span className="text-sm">{brand}</span>
@@ -133,7 +133,7 @@ export default function SchedulePage() {
             <p className="text-blue-100 mt-1">2024年1月16日（周二）</p>
             <div className="mt-4 flex items-center gap-2 text-sm text-blue-100">
               <Building2 className="h-4 w-4" />
-              <span>预计处理 12 个品牌</span>
+              <span>预计处理 4 个品牌</span>
             </div>
           </div>
 

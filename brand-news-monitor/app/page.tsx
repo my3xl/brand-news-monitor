@@ -11,41 +11,41 @@ import {
 } from "lucide-react";
 
 const stats = [
-  { name: "监控品牌", value: "12", icon: Building2, color: "blue" },
-  { name: "今日新闻", value: "48", icon: Newspaper, color: "indigo" },
-  { name: "已发送邮件", value: "8", icon: Send, color: "green" },
-  { name: "待处理", value: "3", icon: Clock, color: "amber" },
+  { name: "监控品牌", value: "4", icon: Building2, color: "blue" },
+  { name: "今日新闻", value: "15", icon: Newspaper, color: "indigo" },
+  { name: "已发送邮件", value: "4", icon: Send, color: "green" },
+  { name: "待处理", value: "1", icon: Clock, color: "amber" },
 ];
 
 const recentJobs = [
   {
     id: 1,
     time: "09:00",
-    brand: "Nike",
+    brand: "RAG & BONE",
     source: "Google News US",
-    count: 15,
+    count: 3,
     status: "sent",
   },
   {
     id: 2,
     time: "09:05",
-    brand: "Zara",
+    brand: "HELLY HANSEN",
     source: "Google News UK",
-    count: 8,
+    count: 4,
     status: "sent",
   },
   {
     id: 3,
     time: "09:10",
-    brand: "H\u0026M",
+    brand: "CAMILLA",
     source: "Google News US",
-    count: 0,
-    status: "no_result",
+    count: 3,
+    status: "sent",
   },
   {
     id: 4,
     time: "09:15",
-    brand: "Adidas",
+    brand: "ALLSAINTS",
     source: "WWD",
     count: 5,
     status: "processing",
