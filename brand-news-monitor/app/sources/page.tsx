@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Plus, Globe, Monitor, CheckCircle2, AlertCircle, Loader2, Edit, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { Plus, Globe, Monitor, CheckCircle2, AlertCircle, Edit, Trash2 } from "lucide-react";
 import SourceModal from "./components/SourceModal";
 
 interface Source {
@@ -19,96 +19,92 @@ interface Source {
   maxArticles?: number;
 }
 
+// 演示模式：静态数据
+const mockSources: Source[] = [
+  {
+    id: "source_1",
+    name: "Google News US (Playwright)",
+    type: "playwright",
+    urlTemplate: "https://news.google.com/search?q={keyword}&hl=en-US&gl=US&ceid=US:en",
+    region: "US",
+    enabled: true,
+    proxyType: "socks5",
+    proxyServer: "127.0.0.1:7897",
+    timeout: 60000,
+    jsWaitTime: 2000,
+    maxArticles: 20,
+  },
+  {
+    id: "source_2",
+    name: "Google News UK (Playwright)",
+    type: "playwright",
+    urlTemplate: "https://news.google.com/search?q={keyword}&hl=en-GB&gl=GB&ceid=GB:en",
+    region: "UK",
+    enabled: true,
+    proxyType: "socks5",
+    proxyServer: "127.0.0.1:7897",
+    timeout: 60000,
+    jsWaitTime: 2000,
+    maxArticles: 20,
+  },
+  {
+    id: "source_3",
+    name: "Google News FR (Playwright)",
+    type: "playwright",
+    urlTemplate: "https://news.google.com/search?q={keyword}&hl=fr-FR&gl=FR&ceid=FR:fr",
+    region: "FR",
+    enabled: true,
+    proxyType: "socks5",
+    proxyServer: "127.0.0.1:7897",
+    timeout: 60000,
+    jsWaitTime: 2500,
+    maxArticles: 15,
+  },
+  {
+    id: "source_4",
+    name: "WWD Fashion",
+    type: "rss",
+    urlTemplate: "https://wwd.com/feed/",
+    region: "US",
+    enabled: false,
+    proxyType: "none",
+    rateLimit: "2s",
+    maxArticles: 10,
+  },
+];
+
 export default function SourcesPage() {
-  const [sources, setSources] = useState<Source[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [sources, setSources] = useState<Source[]>(mockSources);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingSource, setEditingSource] = useState<Source | undefined>();
 
-  // Fetch sources from API
-  useEffect(() => {
-    async function fetchSources() {
-      try {
-        setLoading(true);
-        const response = await fetch("/api/sources");
-        if (!response.ok) {
-          throw new Error("Failed to fetch sources");
-        }
-        const data = await response.json();
-        setSources(data.sources || []);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Unknown error");
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchSources();
-  }, []);
-
-  // Create source
-  async function handleCreate(sourceData: Omit<Source, "id">) {
-    try {
-      const response = await fetch("/api/sources", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(sourceData),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to create source");
-      }
-
-      const data = await response.json();
-      setSources([...sources, data.source]);
-      setIsModalOpen(false);
-    } catch (err) {
-      alert(err instanceof Error ? err.message : "创建失败");
-    }
+  // Create source (演示模式：仅前端)
+  function handleCreate(sourceData: Omit<Source, "id">) {
+    const newSource: Source = {
+      ...sourceData,
+      id: `source_${Date.now()}`,
+    };
+    setSources([...sources, newSource]);
+    setIsModalOpen(false);
   }
 
-  // Update source
-  async function handleUpdate(sourceData: Omit<Source, "id">) {
+  // Update source (演示模式：仅前端)
+  function handleUpdate(sourceData: Omit<Source, "id">) {
     if (!editingSource) return;
 
-    try {
-      const response = await fetch(`/api/sources/${editingSource.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(sourceData),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to update source");
-      }
-
-      const data = await response.json();
-      setSources(sources.map((s) => (s.id === editingSource.id ? data.source : s)));
-      setEditingSource(undefined);
-      setIsModalOpen(false);
-    } catch (err) {
-      alert(err instanceof Error ? err.message : "更新失败");
-    }
+    const updatedSource: Source = {
+      ...sourceData,
+      id: editingSource.id,
+    };
+    setSources(sources.map((s) => (s.id === editingSource.id ? updatedSource : s)));
+    setEditingSource(undefined);
+    setIsModalOpen(false);
   }
 
-  // Delete source
-  async function handleDelete(id: string) {
+  // Delete source (演示模式：仅前端)
+  function handleDelete(id: string) {
     if (!confirm("确定要删除这个抓取源吗？")) return;
-
-    try {
-      const response = await fetch(`/api/sources/${id}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to delete source");
-      }
-
-      setSources(sources.filter((s) => s.id !== id));
-    } catch (err) {
-      alert(err instanceof Error ? err.message : "删除失败");
-    }
+    setSources(sources.filter((s) => s.id !== id));
   }
 
   // Open edit modal
@@ -129,38 +125,8 @@ export default function SourcesPage() {
     setEditingSource(undefined);
   }
 
-  if (loading) {
-    return (
-      <div className="p-8 flex items-center justify-center h-full">
-        <div className="flex items-center gap-2 text-zinc-500">
-          <Loader2 className="h-5 w-5 animate-spin" />
-          加载中...
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="p-8">
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
-          加载失败: {error}
-          <p className="text-sm mt-2 text-red-500">
-            请确保已配置 REDIS_URL 环境变量
-          </p>
-        </div>
-      </div>
-    );
-  }
-
   const rssSources = sources.filter((s) => s.type === "rss");
   const playwrightSources = sources.filter((s) => s.type === "playwright");
-
-  // Helper to format proxy display
-  function getProxyDisplay(source: Source): string {
-    if (!source.proxyType || source.proxyType === "none") return "无代理";
-    return `${source.proxyType.toUpperCase()} ${source.proxyServer || ""}`;
-  }
 
   // Helper to format proxy display
   function getProxyDisplay(source: Source): string {

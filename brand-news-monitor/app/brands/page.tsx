@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Plus, Search, Edit, Trash2, Mail, Globe, Loader2 } from "lucide-react";
+import { useState } from "react";
+import { Plus, Search, Edit, Trash2, Mail, Globe } from "lucide-react";
 import BrandModal from "./components/BrandModal";
 
 interface Brand {
@@ -15,110 +15,103 @@ interface Brand {
   updatedAt: string;
 }
 
-interface Source {
-  id: string;
-  name: string;
-  type: "rss" | "playwright";
-  enabled: boolean;
-}
+// 演示模式：静态数据
+const mockBrands: Brand[] = [
+  {
+    id: "brand_1",
+    name: "Nike",
+    keywords: 'Nike OR "Nike Inc"',
+    emails: ["am_a@company.com", "manager_nike@company.com"],
+    sources: ["source_1", "source_2"],
+    status: "active",
+    createdAt: "2024-01-01T00:00:00Z",
+    updatedAt: "2024-04-20T10:00:00Z",
+  },
+  {
+    id: "brand_2",
+    name: "Zara",
+    keywords: "Zara OR Inditex",
+    emails: ["am_b@company.com"],
+    sources: ["source_1", "source_3"],
+    status: "active",
+    createdAt: "2024-01-02T00:00:00Z",
+    updatedAt: "2024-04-19T15:30:00Z",
+  },
+  {
+    id: "brand_3",
+    name: "H&M",
+    keywords: "H&M OR Hennes Mauritz",
+    emails: ["am_c@company.com", "hm_team@company.com"],
+    sources: ["source_1", "source_2"],
+    status: "active",
+    createdAt: "2024-01-03T00:00:00Z",
+    updatedAt: "2024-04-18T09:15:00Z",
+  },
+  {
+    id: "brand_4",
+    name: "Uniqlo",
+    keywords: "Uniqlo OR Fast Retailing",
+    emails: ["am_d@company.com"],
+    sources: ["source_1", "source_3"],
+    status: "active",
+    createdAt: "2024-02-01T00:00:00Z",
+    updatedAt: "2024-04-17T14:20:00Z",
+  },
+  {
+    id: "brand_5",
+    name: "Adidas",
+    keywords: 'Adidas OR "Adidas Group"',
+    emails: ["am_e@company.com", "adidas_manager@company.com"],
+    sources: ["source_1", "source_2"],
+    status: "paused",
+    createdAt: "2024-02-15T00:00:00Z",
+    updatedAt: "2024-04-16T11:00:00Z",
+  },
+];
+
+const mockSources = [
+  { id: "source_1", name: "Google News US (Playwright)" },
+  { id: "source_2", name: "Google News UK (Playwright)" },
+  { id: "source_3", name: "Google News FR (Playwright)" },
+  { id: "source_4", name: "WWD Fashion" },
+];
 
 export default function BrandsPage() {
-  const [brands, setBrands] = useState<Brand[]>([]);
-  const [sources, setSources] = useState<Source[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [brands, setBrands] = useState<Brand[]>(mockBrands);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingBrand, setEditingBrand] = useState<Brand | undefined>();
 
-  // Fetch brands and sources from API
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        setLoading(true);
-        const [brandsRes, sourcesRes] = await Promise.all([
-          fetch("/api/brands"),
-          fetch("/api/sources"),
-        ]);
-
-        if (!brandsRes.ok || !sourcesRes.ok) {
-          throw new Error("Failed to fetch data");
-        }
-
-        const brandsData = await brandsRes.json();
-        const sourcesData = await sourcesRes.json();
-
-        setBrands(brandsData.brands || []);
-        setSources(sourcesData.sources || []);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Unknown error");
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchData();
-  }, []);
-
-  // Create brand
-  async function handleCreate(brandData: Omit<Brand, "id" | "createdAt" | "updatedAt">) {
-    try {
-      const response = await fetch("/api/brands", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(brandData),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to create brand");
-      }
-
-      const data = await response.json();
-      setBrands([...brands, data.brand]);
-    } catch (err) {
-      alert(err instanceof Error ? err.message : "创建失败");
-    }
+  // Create brand (演示模式：仅前端)
+  function handleCreate(brandData: Omit<Brand, "id" | "createdAt" | "updatedAt">) {
+    const newBrand: Brand = {
+      ...brandData,
+      id: `brand_${Date.now()}`,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    setBrands([...brands, newBrand]);
+    setIsModalOpen(false);
   }
 
-  // Update brand
-  async function handleUpdate(brandData: Omit<Brand, "id" | "createdAt" | "updatedAt">) {
+  // Update brand (演示模式：仅前端)
+  function handleUpdate(brandData: Omit<Brand, "id" | "createdAt" | "updatedAt">) {
     if (!editingBrand) return;
 
-    try {
-      const response = await fetch(`/api/brands/${editingBrand.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(brandData),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to update brand");
-      }
-
-      const data = await response.json();
-      setBrands(brands.map((b) => (b.id === editingBrand.id ? data.brand : b)));
-      setEditingBrand(undefined);
-    } catch (err) {
-      alert(err instanceof Error ? err.message : "更新失败");
-    }
+    const updatedBrand: Brand = {
+      ...brandData,
+      id: editingBrand.id,
+      createdAt: editingBrand.createdAt,
+      updatedAt: new Date().toISOString(),
+    };
+    setBrands(brands.map((b) => (b.id === editingBrand.id ? updatedBrand : b)));
+    setEditingBrand(undefined);
+    setIsModalOpen(false);
   }
 
-  // Delete brand
-  async function handleDelete(id: string) {
+  // Delete brand (演示模式：仅前端)
+  function handleDelete(id: string) {
     if (!confirm("确定要删除这个品牌吗？")) return;
-
-    try {
-      const response = await fetch(`/api/brands/${id}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to delete brand");
-      }
-
-      setBrands(brands.filter((b) => b.id !== id));
-    } catch (err) {
-      alert(err instanceof Error ? err.message : "删除失败");
-    }
+    setBrands(brands.filter((b) => b.id !== id));
   }
 
   // Open edit modal
@@ -137,30 +130,6 @@ export default function BrandsPage() {
   function handleCloseModal() {
     setIsModalOpen(false);
     setEditingBrand(undefined);
-  }
-
-  if (loading) {
-    return (
-      <div className="p-8 flex items-center justify-center h-full">
-        <div className="flex items-center gap-2 text-zinc-500">
-          <Loader2 className="h-5 w-5 animate-spin" />
-          加载中...
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="p-8">
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
-          加载失败: {error}
-          <p className="text-sm mt-2 text-red-500">
-            请确保已配置 REDIS_URL 环境变量
-          </p>
-        </div>
-      </div>
-    );
   }
 
   return (
@@ -223,71 +192,63 @@ export default function BrandsPage() {
             </tr>
           </thead>
           <tbody className="divide-y divide-zinc-200">
-            {brands.length === 0 ? (
-              <tr>
-                <td colSpan={6} className="px-6 py-12 text-center text-zinc-500">
-                  暂无品牌数据
+            {brands.map((brand) => (
+              <tr key={brand.id} className="hover:bg-zinc-50">
+                <td className="px-6 py-4">
+                  <span className="font-semibold text-zinc-900">{brand.name}</span>
+                </td>
+                <td className="px-6 py-4">
+                  <code className="text-sm text-zinc-600 bg-zinc-100 px-2 py-1 rounded">
+                    {brand.keywords}
+                  </code>
+                </td>
+                <td className="px-6 py-4">
+                  <div className="flex flex-col gap-1">
+                    {brand.emails?.map((email) => (
+                      <div key={email} className="flex items-center gap-2 text-sm text-zinc-600">
+                        <Mail className="h-4 w-4" />
+                        {email}
+                      </div>
+                    ))}
+                  </div>
+                </td>
+                <td className="px-6 py-4">
+                  <div className="flex items-center gap-2">
+                    <Globe className="h-4 w-4 text-zinc-400" />
+                    <span className="text-sm text-zinc-600">
+                      {brand.sources?.length || 0} 个源
+                    </span>
+                  </div>
+                </td>
+                <td className="px-6 py-4">
+                  <span
+                    className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${
+                      brand.status === "active"
+                        ? "bg-green-50 text-green-600"
+                        : "bg-amber-50 text-amber-600"
+                    }`}
+                  >
+                    {brand.status === "active" ? "运行中" : "已暂停"}
+                  </span>
+                </td>
+                <td className="px-6 py-4">
+                  <div className="flex items-center justify-end gap-2">
+                    <button
+                      onClick={() => handleEdit(brand)}
+                      className="p-2 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                    >
+                      <Edit className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(brand.id)}
+                      className="p-2 text-zinc-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
                 </td>
               </tr>
-            ) : (
-              brands.map((brand) => (
-                <tr key={brand.id} className="hover:bg-zinc-50">
-                  <td className="px-6 py-4">
-                    <span className="font-semibold text-zinc-900">{brand.name}</span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <code className="text-sm text-zinc-600 bg-zinc-100 px-2 py-1 rounded">
-                      {brand.keywords}
-                    </code>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex flex-col gap-1">
-                      {brand.emails?.map((email) => (
-                        <div key={email} className="flex items-center gap-2 text-sm text-zinc-600">
-                          <Mail className="h-4 w-4" />
-                          {email}
-                        </div>
-                      ))}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                      <Globe className="h-4 w-4 text-zinc-400" />
-                      <span className="text-sm text-zinc-600">
-                        {brand.sources?.length || 0} 个源
-                      </span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span
-                      className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${
-                        brand.status === "active"
-                          ? "bg-green-50 text-green-600"
-                          : "bg-amber-50 text-amber-600"
-                      }`}
-                    >
-                      {brand.status === "active" ? "运行中" : "已暂停"}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center justify-end gap-2">
-                      <button
-                        onClick={() => handleEdit(brand)}
-                        className="p-2 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                      >
-                        <Edit className="h-4 w-4" />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(brand.id)}
-                        className="p-2 text-zinc-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))
-            )}
+            ))}
           </tbody>
         </table>
       </div>
@@ -311,7 +272,7 @@ export default function BrandsPage() {
         onClose={handleCloseModal}
         onSubmit={editingBrand ? handleUpdate : handleCreate}
         initialData={editingBrand}
-        availableSources={sources.map(s => ({ id: s.id, name: s.name }))}
+        availableSources={mockSources}
       />
     </div>
   );

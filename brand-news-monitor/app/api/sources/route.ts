@@ -1,60 +1,95 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAllSources, createSource, initSampleData } from "@/lib/redis";
 
-// GET /api/sources - List all sources
+// 演示模式：静态数据，不连 Redis
+const mockSources = [
+  {
+    id: "source_1",
+    name: "Google News US (Playwright)",
+    type: "playwright",
+    urlTemplate: "https://news.google.com/search?q={keyword}&hl=en-US&gl=US&ceid=US:en",
+    region: "US",
+    enabled: true,
+    proxyType: "socks5",
+    proxyServer: "127.0.0.1:7897",
+    timeout: 60000,
+    jsWaitTime: 2000,
+    maxArticles: 20,
+    selectors: {
+      articleLink: "a[href^='./read/']",
+      time: "time",
+    },
+  },
+  {
+    id: "source_2",
+    name: "Google News UK (Playwright)",
+    type: "playwright",
+    urlTemplate: "https://news.google.com/search?q={keyword}&hl=en-GB&gl=GB&ceid=GB:en",
+    region: "UK",
+    enabled: true,
+    proxyType: "socks5",
+    proxyServer: "127.0.0.1:7897",
+    timeout: 60000,
+    jsWaitTime: 2000,
+    maxArticles: 20,
+    selectors: {
+      articleLink: "a[href^='./read/']",
+      time: "time",
+    },
+  },
+  {
+    id: "source_3",
+    name: "Google News FR (Playwright)",
+    type: "playwright",
+    urlTemplate: "https://news.google.com/search?q={keyword}&hl=fr-FR&gl=FR&ceid=FR:fr",
+    region: "FR",
+    enabled: true,
+    proxyType: "socks5",
+    proxyServer: "127.0.0.1:7897",
+    timeout: 60000,
+    jsWaitTime: 2500,
+    maxArticles: 15,
+    selectors: {
+      articleLink: "a[href^='./read/']",
+      time: "time",
+    },
+  },
+  {
+    id: "source_4",
+    name: "WWD Fashion",
+    type: "rss",
+    urlTemplate: "https://wwd.com/feed/",
+    region: "US",
+    enabled: false,
+    proxyType: "none",
+    rateLimit: "2s",
+    maxArticles: 10,
+  },
+];
+
+// GET /api/sources - List all sources (演示模式)
 export async function GET() {
-  try {
-    // Initialize sample data if empty (for demo)
-    await initSampleData();
-
-    const sources = await getAllSources();
-    return NextResponse.json({ sources });
-  } catch (error) {
-    console.error("Error fetching sources:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch sources" },
-      { status: 500 }
-    );
-  }
+  return NextResponse.json({ sources: mockSources });
 }
 
-// POST /api/sources - Create a new source
+// POST /api/sources - Create a new source (演示模式)
 export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json();
+  const body = await request.json();
 
-    // Validate required fields
-    if (!body.name || !body.type || !body.urlTemplate || !body.region) {
-      return NextResponse.json(
-        { error: "Missing required fields: name, type, urlTemplate, region" },
-        { status: 400 }
-      );
-    }
+  const newSource = {
+    id: `source_${Date.now()}`,
+    name: body.name,
+    type: body.type,
+    urlTemplate: body.urlTemplate,
+    region: body.region,
+    enabled: body.enabled ?? true,
+    proxyType: body.proxyType,
+    proxyServer: body.proxyServer,
+    rateLimit: body.rateLimit,
+    timeout: body.timeout,
+    jsWaitTime: body.jsWaitTime,
+    maxArticles: body.maxArticles,
+    selectors: body.selectors,
+  };
 
-    const source = await createSource({
-      name: body.name,
-      type: body.type,
-      urlTemplate: body.urlTemplate,
-      region: body.region,
-      enabled: body.enabled ?? true,
-      // 代理配置 (RSS 和 Playwright 都可用)
-      proxyType: body.proxyType,
-      proxyServer: body.proxyServer,
-      // RSS 特有
-      rateLimit: body.rateLimit || "1s",
-      // Playwright 特有
-      timeout: body.timeout,
-      jsWaitTime: body.jsWaitTime,
-      maxArticles: body.maxArticles,
-      selectors: body.selectors,
-    });
-
-    return NextResponse.json({ source }, { status: 201 });
-  } catch (error) {
-    console.error("Error creating source:", error);
-    return NextResponse.json(
-      { error: "Failed to create source" },
-      { status: 500 }
-    );
-  }
+  return NextResponse.json({ source: newSource }, { status: 201 });
 }
