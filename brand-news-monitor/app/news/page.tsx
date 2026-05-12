@@ -36,12 +36,12 @@ const newsData: NewsItem[] = [
     source: "Google News US",
     sourceUrl: "https://news.google.com/search?q=RAG+BONE+SoHo+flagship",
     brand: "RAG & BONE",
-    date: "2025-04-18",
+    date: "2026-05-03",
     grade: "A",
     summary:
       "Rag & Bone 在纽约 SoHo 区开设全新旗舰店，占地 3,500 平方英尺，采用可持续建材和本地化供应链策略。新店将展示品牌完整的男女装系列，并设立定制工坊区域。",
     sent: true,
-    emailDate: "2025-04-18",
+    emailDate: "2026-05-03",
   },
   {
     id: 2,
@@ -49,12 +49,12 @@ const newsData: NewsItem[] = [
     source: "WWD",
     sourceUrl: "https://wwd.com/fashion-news/rag-bone-japanese-denim",
     brand: "RAG & BONE",
-    date: "2025-04-15",
+    date: "2026-05-01",
     grade: "A",
     summary:
       "品牌与日本顶级牛仔布厂 Kurabo 合作推出限量系列，强调供应链透明度和工匠精神。该合作将缩短传统 12 个月的生产周期至 8 个月，提升响应速度。",
     sent: true,
-    emailDate: "2025-04-15",
+    emailDate: "2026-05-01",
   },
   {
     id: 3,
@@ -62,12 +62,12 @@ const newsData: NewsItem[] = [
     source: "Business of Fashion",
     sourceUrl: "https://businessoffashion.com/articles/executive-changes",
     brand: "RAG & BONE",
-    date: "2025-04-10",
+    date: "2026-04-28",
     grade: "A",
     summary:
       "创始人 Marcus Wainwright 卸任 CEO 职务，转任品牌创意总监。新任 CEO 来自 LVMH 集团旗下品牌，将主导品牌的数字化转型和亚太市场扩张战略。",
     sent: true,
-    emailDate: "2025-04-10",
+    emailDate: "2026-04-28",
   },
   // HELLY HANSEN 新闻
   {
@@ -76,12 +76,12 @@ const newsData: NewsItem[] = [
     source: "Google News UK",
     sourceUrl: "https://news.google.com/search?q=Helly+Hansen+Q1+2025+earnings",
     brand: "HELLY HANSEN",
-    date: "2025-04-19",
+    date: "2026-05-04",
     grade: "A",
     summary:
       "挪威户外品牌 Helly Hansen 公布 Q1 财报，销售额同比增长 23%，主要受北美和亚洲市场推动。品牌将追加投资 5,000 万美元扩建挪威本土研发中心。",
     sent: true,
-    emailDate: "2025-04-19",
+    emailDate: "2026-05-04",
   },
   {
     id: 5,
@@ -89,12 +89,12 @@ const newsData: NewsItem[] = [
     source: "Outdoor Retailer",
     sourceUrl: "https://outdoorretailer.com/helly-hansen-sustainable-membrane",
     brand: "HELLY HANSEN",
-    date: "2025-04-14",
+    date: "2026-04-30",
     grade: "A",
     summary:
       "品牌发布全新环保防水膜技术 LIFA Infinity Pro，完全不含 PFAS 化学物质，采用闭环回收系统生产。该技术将应用于 2025 秋冬系列核心产品。",
     sent: true,
-    emailDate: "2025-04-14",
+    emailDate: "2026-04-30",
   },
   {
     id: 6,
@@ -102,7 +102,7 @@ const newsData: NewsItem[] = [
     source: "Ski Magazine",
     sourceUrl: "https://skimag.com/helly-hansen-ski-patrol",
     brand: "HELLY HANSEN",
-    date: "2025-04-08",
+    date: "2026-04-27",
     grade: "B",
     summary:
       "品牌与北美 15 个顶级滑雪度假村续约专业巡逻装备供应合同，包括 Aspen、Vail 和 Whistler。合同价值约 800 万美元，为期 3 年。",
@@ -116,12 +116,12 @@ const newsData: NewsItem[] = [
     source: "Google News US",
     sourceUrl: "https://news.google.com/search?q=Camilla+Los+Angeles+boutique",
     brand: "CAMILLA",
-    date: "2025-04-17",
+    date: "2026-05-02",
     grade: "A",
     summary:
       "澳大利亚设计师品牌 Camilla 在美国洛杉矶 Melrose Avenue 开设首间精品店，占地 2,800 平方英尺。新店将展示品牌标志性的真丝印花系列和独家美国限定款。",
     sent: true,
-    emailDate: "2025-04-17",
+    emailDate: "2026-05-02",
   },
   {
     id: 8,
@@ -129,12 +129,12 @@ const newsData: NewsItem[] = [
     source: "Fashion Journal",
     sourceUrl: "https://fashionjournal.com.au/camilla-wool-partnership",
     brand: "CAMILLA",
-    date: "2025-04-12",
+    date: "2026-04-29",
     grade: "A",
     summary:
       "品牌与澳大利亚羊毛创新组织合作，推出使用 100% 可追溯美利奴羊毛的冬季系列。所有羊毛来自新南威尔士州认证农场，符合 Responsible Wool Standard。",
     sent: true,
-    emailDate: "2025-04-12",
+    emailDate: "2026-04-29",
   },
   {
     id: 9,
@@ -142,7 +142,7 @@ const newsData: NewsItem[] = [
     source: "Retail Dive",
     sourceUrl: "https://retaildive.com/news/camilla-ai-personalization",
     brand: "CAMILLA",
-    date: "2025-04-05",
+    date: "2026-04-26",
     grade: "B",
     summary:
       "品牌投资 300 万澳元升级电商平台，引入 AI 个性化推荐系统和虚拟试衣功能。预计新系统将提升转化率 15% 并降低退货率。",
@@ -156,12 +156,12 @@ const newsData: NewsItem[] = [
     source: "Google News UK",
     sourceUrl: "https://news.google.com/search?q=AllSaints+circular+fashion+resale",
     brand: "ALLSAINTS",
-    date: "2025-04-20",
+    date: "2026-05-05",
     grade: "A",
     summary:
       "英国品牌 AllSaints 推出官方二手交易平台 ReSaint，顾客可出售和购买经认证的二手皮夹克和服装。品牌承诺到 2027 年实现 30% 的产品来自可持续材料。",
     sent: true,
-    emailDate: "2025-04-20",
+    emailDate: "2026-05-05",
   },
   {
     id: 11,
@@ -169,12 +169,12 @@ const newsData: NewsItem[] = [
     source: "Supply Chain Digital",
     sourceUrl: "https://supplychaindigital.com/allsaints-distribution-netherlands",
     brand: "ALLSAINTS",
-    date: "2025-04-16",
+    date: "2026-05-01",
     grade: "A",
     summary:
       "品牌在荷兰鹿特丹开设新的欧洲配送中心，面积 12 万平方英尺，采用自动化仓储系统。新中心将缩短欧洲大陆配送时间至 2-3 天，并支持当日达服务扩展。",
     sent: true,
-    emailDate: "2025-04-16",
+    emailDate: "2026-05-01",
   },
   {
     id: 12,
@@ -182,12 +182,12 @@ const newsData: NewsItem[] = [
     source: "GQ UK",
     sourceUrl: "https://gq-magazine.co.uk/fashion/allsaints-artist-collaboration",
     brand: "ALLSAINTS",
-    date: "2025-04-11",
+    date: "2026-04-29",
     grade: "B",
     summary:
       "AllSaints 与英国当代艺术家合作推出限量版手绘皮夹克系列，每件作品均在伦敦总部手工完成。系列将在全球 50 家门店和官网独家发售。",
     sent: true,
-    emailDate: "2025-04-11",
+    emailDate: "2026-04-29",
   },
   {
     id: 13,
@@ -195,12 +195,12 @@ const newsData: NewsItem[] = [
     source: "Financial Times",
     sourceUrl: "https://ft.com/content/allsaints-private-equity-sale",
     brand: "ALLSAINTS",
-    date: "2025-04-07",
+    date: "2026-04-27",
     grade: "A",
     summary:
       "持有 AllSaints 多数股权的私募基金 Lion Capital 正在评估出售部分或全部持股，估值约 3 亿英镑。潜在买家包括几家亚洲零售集团和英国本土私募基金。",
     sent: true,
-    emailDate: "2025-04-07",
+    emailDate: "2026-04-27",
   },
   {
     id: 14,
@@ -208,7 +208,7 @@ const newsData: NewsItem[] = [
     source: "Japan Times",
     sourceUrl: "https://japantimes.co.jp/allsaints-japan-growth",
     brand: "ALLSAINTS",
-    date: "2025-04-03",
+    date: "2026-04-25",
     grade: "B",
     summary:
       "品牌在日本市场连续第三个季度实现双位数增长，目前在东京、大阪和福冈运营 8 家门店。计划 2025 年底前在京都和札幌开设新店。",
@@ -221,7 +221,7 @@ const newsData: NewsItem[] = [
     source: "Vogue",
     sourceUrl: "https://vogue.com/fashion/rag-bone-20th-anniversary",
     brand: "RAG & BONE",
-    date: "2025-04-02",
+    date: "2026-04-25",
     grade: "C",
     summary:
       "品牌发布 20 周年限定系列，复刻历年经典款式。系列在社交媒体上获得高度关注，但供应链影响有限。",
@@ -292,9 +292,8 @@ export default function NewsPage() {
           <div className="flex items-center gap-2">
             <Calendar className="h-4 w-4 text-zinc-400" />
             <select className="flex-1 px-3 py-2 border border-zinc-200 rounded-lg">
-              <option>最近7天</option>
               <option>最近30天</option>
-              <option>最近90天</option>
+              <option selected>最近90天</option>
               <option>全部</option>
             </select>
           </div>

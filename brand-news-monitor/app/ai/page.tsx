@@ -22,8 +22,8 @@ interface AIConfig {
 const defaultConfig: AIConfig = {
   provider: "kimi-coding",
   apiKey: "",
-  apiUrl: "https://api.kimi.com/coding/v1/messages",
-  model: "kimi-k2.5",
+  apiUrl: "https://api.deepseek.com/v1/chat/completions",
+  model: "deepseek-v4-pro",
   summaryEnabled: true,
   summaryLength: 100,
   summaryPrompt: `你是一个时尚品牌新闻分析师。请为以下新闻标题生成一段中文摘要，要求：
@@ -70,7 +70,7 @@ export default function AIConfigPage() {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-zinc-900">AI 配置</h1>
-        <p className="text-zinc-500 mt-1">配置 Kimi API 和新闻处理参数</p>
+        <p className="text-zinc-500 mt-1">配置 AI 模型和新闻处理参数</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -82,52 +82,63 @@ export default function AIConfigPage() {
             </div>
             <div>
               <h2 className="font-semibold text-zinc-900">AI 服务商</h2>
-              <p className="text-sm text-zinc-500">Kimi Coding API 配置</p>
+              <p className="text-sm text-zinc-500">选择模型并配置 API 参数</p>
             </div>
           </div>
 
           <div className="space-y-4">
-            <div className="p-3 border border-blue-200 bg-blue-50 rounded-lg">
+            <div className={`p-3 border rounded-lg transition-colors ${
+              config.model === "deepseek-v4-pro"
+                ? "border-blue-200 bg-blue-50"
+                : "border-zinc-200 hover:border-zinc-300"
+            }`}>
               <div className="flex items-center gap-3">
                 <input
                   type="radio"
-                  name="provider"
-                  checked={config.provider === "kimi-coding"}
-                  onChange={() => updateConfig("provider", "kimi-coding")}
+                  name="model"
+                  checked={config.model === "deepseek-v4-pro"}
+                  onChange={() => updateConfig("model", "deepseek-v4-pro")}
                   className="h-4 w-4 text-blue-600"
                 />
                 <div className="flex-1">
-                  <p className="font-medium text-zinc-900">Kimi Coding</p>
-                  <p className="text-sm text-zinc-500">推荐 · VSCode 插件同款 API</p>
+                  <p className="font-medium text-zinc-900">DeepSeek V4 Pro</p>
+                  <p className="text-sm text-zinc-500">推荐 · 性价比高，中文能力强</p>
                 </div>
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-zinc-700 mb-2">
-                  <Key className="inline h-4 w-4 mr-1" />
-                  API Key
-                </label>
+            <div className={`p-3 border rounded-lg transition-colors ${
+              config.model === "gemini-3.2"
+                ? "border-blue-200 bg-blue-50"
+                : "border-zinc-200 hover:border-zinc-300"
+            }`}>
+              <div className="flex items-center gap-3">
                 <input
-                  type="password"
-                  value={config.apiKey}
-                  onChange={(e) => updateConfig("apiKey", e.target.value)}
-                  placeholder="sk-kimi-xxxxxxxx"
-                  className="w-full px-3 py-2 border border-zinc-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  type="radio"
+                  name="model"
+                  checked={config.model === "gemini-3.2"}
+                  onChange={() => updateConfig("model", "gemini-3.2")}
+                  className="h-4 w-4 text-blue-600"
                 />
+                <div className="flex-1">
+                  <p className="font-medium text-zinc-900">Gemini 3.2</p>
+                  <p className="text-sm text-zinc-500">Google 最新模型 · 多语言优势</p>
+                </div>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-zinc-700 mb-2">
-                  模型
-                </label>
-                <input
-                  type="text"
-                  value={config.model}
-                  onChange={(e) => updateConfig("model", e.target.value)}
-                  className="w-full px-3 py-2 border border-zinc-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-zinc-700 mb-2">
+                <Key className="inline h-4 w-4 mr-1" />
+                API Key
+              </label>
+              <input
+                type="password"
+                value={config.apiKey}
+                onChange={(e) => updateConfig("apiKey", e.target.value)}
+                placeholder="sk-xxxxxxxx"
+                className="w-full px-3 py-2 border border-zinc-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
             </div>
 
             <div>
